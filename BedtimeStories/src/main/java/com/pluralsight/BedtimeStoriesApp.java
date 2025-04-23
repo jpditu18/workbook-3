@@ -1,6 +1,7 @@
 package com.pluralsight;
 
 import java.io.FileInputStream;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class BedtimeStoriesApp {
@@ -9,23 +10,36 @@ public class BedtimeStoriesApp {
 
     public static void main(String[] args) {
 
-        try{
+        boolean keepReading = true;
 
-            System.out.println("Enter the name of a story:");
-            String storyChoice = myStories.nextLine();
+        while (keepReading){
+            try{
 
-            FileInputStream fis = new FileInputStream("src/main/resources/" + storyChoice);
-            Scanner fileScanner = new Scanner(fis);
+                System.out.println("Enter the name of a story:");
+                String storyChoice = myStories.nextLine();
 
-            int lineNumber = 1;
-            while(fileScanner.hasNextLine()){
-                System.out.println(lineNumber + ": " + fileScanner.nextLine());
-                lineNumber++;
+                FileInputStream fis = new FileInputStream("src/main/resources/" + storyChoice);
+                Scanner fileScanner = new Scanner(fis);
+
+                int lineNumber = 1;
+                System.out.println("You are reading: " + storyChoice + "\":\n");
+                while(fileScanner.hasNextLine()){
+                    System.out.println(lineNumber + ": " + fileScanner.nextLine());
+                    lineNumber++;
+                }
+
+            } catch (Exception e) {
+                System.out.println("Story Doesn't exist");
+
             }
+            System.out.println("\nWould you like to read another story? (y/n): ");
+            String answer = myStories.nextLine().trim().toLowerCase();
 
+            if (!answer.equals("y")){
+                keepReading = false;
+                System.out.println("Thank You for reading. Have a nice day!");
+        }
 
-        } catch (Exception e) {
-            System.out.println("Story Doesn't exist");
         }
     }
 
